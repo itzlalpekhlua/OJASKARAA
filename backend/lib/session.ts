@@ -68,3 +68,12 @@ export const sessionCookie = {
   name: SESSION_COOKIE,
   maxAge: SESSION_MAX_AGE_SECONDS,
 };
+
+// SameSite=None; Secure is required so the cookie is accepted inside the
+// cross-origin HTTPS preview iframe (and works on any HTTPS deployment).
+export const sessionCookieOptions = {
+  httpOnly: true,
+  sameSite: "none" as const,
+  secure: true,
+  path: "/",
+};
