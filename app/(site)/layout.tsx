@@ -20,6 +20,11 @@ const brand = Poppins({
   variable: "--font-brand",
 });
 
+// These pages read live data from the database on every request, so they must
+// render dynamically rather than being statically prerendered at build time
+// (there is no DATABASE_URL available during the build).
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Ojaskaraa Builders",
   description:

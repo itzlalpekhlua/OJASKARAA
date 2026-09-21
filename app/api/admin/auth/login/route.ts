@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
-import { sessionCookie, signSession } from "@/lib/session";
+import { sessionCookie, sessionCookieOptions, signSession } from "@/lib/session";
 
 export async function POST(request: NextRequest) {
   const body = await request.json().catch(() => null);
@@ -25,10 +25,7 @@ export async function POST(request: NextRequest) {
   const token = await signSession({ uid: user.id });
   const response = NextResponse.json({ ok: true });
   response.cookies.set(sessionCookie.name, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
+    ...sessionCookieOptions,
     maxAge: sessionCookie.maxAge,
   });
   return response;
