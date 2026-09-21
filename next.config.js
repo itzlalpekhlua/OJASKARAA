@@ -6,7 +6,13 @@ const nextConfig = {
   // Only set for `next build` — Turbopack's dev-mode font loader breaks when
   // this is on during `next dev` (NODE_ENV is always "development" there,
   // forced by the Next.js CLI, so this can't accidentally leak into dev).
-  output: process.env.NODE_ENV === "production" ? "standalone" : undefined,
+  // Skipped on Vercel: Vercel does its own serverless file tracing and expects
+  // the .nft.json trace files, which the standalone output does not emit under
+  // Turbopack — leaving it on there breaks the build at onBuildComplete.
+  output:
+    process.env.NODE_ENV === "production" && !process.env.VERCEL
+      ? "standalone"
+      : undefined,
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
